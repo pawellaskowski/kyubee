@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/timerFragment"
-        android:name="com.pjl.kyubee.TimerFragment"
+        android:name="com.pjl.kyubee.timer.TimerFragment"
         android:label="TimerFragment"
         tools:layout="@layout/fragment_timer" />
 
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.pjl.kyubee.HistoryFragment"
+        android:name="com.pjl.kyubee.history.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="com.pjl.kyubee.StatisticsFragment"
+        android:name="com.pjl.kyubee.stats.StatisticsFragment"
         android:label="fragment_statistics"
         tools:layout="@layout/fragment_statistics" />
 
