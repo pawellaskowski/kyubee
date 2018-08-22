@@ -1,5 +1,7 @@
 package com.pjl.kyubee.timer
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -7,24 +9,46 @@ import android.view.View
 import android.view.ViewGroup
 import com.pjl.kyubee.R
 import kotlinx.android.synthetic.main.fragment_timer.*
+import kotlinx.android.synthetic.main.fragment_timer.view.*
+
 
 class TimerFragment : Fragment() {
+
+    lateinit var viewModel: TimerViewModel
+
     private val timeRunnable = TimeUpdateRunnable()
-    private val timerWatcher: TimerListener = TimerWatcher()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        TimerModel.timerListener = timerWatcher
-        return inflater.inflate(R.layout.fragment_timer, container, false)
+        val view = inflater.inflate(R.layout.fragment_timer, container, false)
+        view.timer.setOnClickListener{
+            viewModel.onTimerClick()
+        }
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        timer.setOnClickListener(TimerClickListener())
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
+        viewModel.getTimer().observe(this, Observer {
+            if (it != null) {
+                when {
+                    it.isRunning() -> startUpdatingTime()
+                    it.isStopped() -> stopUpdatingTime()
+                }
+            }
+        })
     }
 
-    private fun getTimer() = TimerModel.timer
+    private inner class TimeUpdateRunnable : Runnable {
+        override fun run() {
+            val currentTimer = viewModel.getTimer().value
+            timer.text = currentTimer?.getTime().toString()
+            if (currentTimer?.isRunning() == true) {
+                timer.postDelayed(this, 1)
+            }
+        }
+    }
 
     private fun stopUpdatingTime() = timer.removeCallbacks(timeRunnable)
 
@@ -33,39 +57,4 @@ class TimerFragment : Fragment() {
         timer.post(timeRunnable)
     }
 
-    private fun updateTime() {
-        val currentTimer = getTimer()
-        val totalTime = currentTimer.getTime()
-        timer.text = totalTime.toString()
-    }
-
-    private inner class TimeUpdateRunnable() : Runnable {
-        override fun run() {
-            val currentTimer = getTimer()
-            updateTime()
-            if (currentTimer.isRunning()) {
-                timer.postDelayed(this, 1)
-            }
-        }
-    }
-
-    private inner class TimerWatcher : TimerListener {
-        override fun timerUpdated(before: Timer, after: Timer) {
-            when {
-                after.isRunning() -> startUpdatingTime()
-                after.isStopped() -> stopUpdatingTime()
-            }
-        }
-    }
-
-    private inner class TimerClickListener : View.OnClickListener {
-        override fun onClick(v: View) {
-            if (getTimer().isRunning()) {
-                TimerModel.stopTimer()
-            } else {
-                TimerModel.startTimer()
-            }
-        }
-    }
 }
-
