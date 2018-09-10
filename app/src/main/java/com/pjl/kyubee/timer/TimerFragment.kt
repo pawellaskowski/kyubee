@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_timer.view.*
 
 
 class TimerFragment : Fragment() {
+
     private lateinit var viewModel: TimerViewModel
     private val timeRunnable = TimeUpdateRunnable()
 
@@ -33,7 +34,7 @@ class TimerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(TimerViewModel::class.java)
         viewModel.getTimer().observe(this, Observer {
             if (it != null) {
                 Log.d("viewmodel", "state = ${it.state}")
@@ -66,4 +67,5 @@ class TimerFragment : Fragment() {
         stopUpdatingTime()
         timer.post(timeRunnable)
     }
+
 }

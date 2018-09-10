@@ -28,9 +28,10 @@ class HistoryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = HistoryAdapter()
-        viewModel = ViewModelProviders.of(this).get(HistoryViewModel::class.java)
-        viewModel.getAllSolves()?.observe(this, Observer {
+        viewModel = ViewModelProviders.of(activity!!).get(HistoryViewModel::class.java)
+        viewModel.getAllSolves().observe(this, Observer {
             adapter.setSolves(it)
         })
     }
+
 }
