@@ -3,8 +3,7 @@ package com.pjl.kyubee.timer
 import android.os.SystemClock
 
 class Timer(val state: State, val startTime: Long, val accumulatedTime: Long) {
-
-    public enum class State { RESET, RUNNING, STOPPED }
+    enum class State { RESET, PREPARING, READY, RUNNING, STOPPED }
 
     companion object {
         const val UNUSED = Long.MIN_VALUE
@@ -13,9 +12,15 @@ class Timer(val state: State, val startTime: Long, val accumulatedTime: Long) {
 
     fun now(): Long = SystemClock.elapsedRealtime()
 
+    fun isPreparing() = state == State.PREPARING
+    fun isReady() = state == State.READY
     fun isRunning() = state == State.RUNNING
     fun isStopped() = state == State.STOPPED
     fun isReset() = state == State.RESET
+
+    fun prepare(): Timer = Timer(State.PREPARING, now(), 0)
+
+    fun ready(): Timer = Timer(State.READY, UNUSED, 0)
 
     fun start(): Timer = Timer(State.RUNNING, now(), 0)
 
@@ -24,6 +29,4 @@ class Timer(val state: State, val startTime: Long, val accumulatedTime: Long) {
     fun reset(): Timer = RESET_TIMER
 
     fun getTime(): Long = now() - startTime
-
-
 }

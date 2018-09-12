@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".history.HistoryFragment">
 
-    <TextView
-        android:id="@+id/button"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/solve_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="history"
-        android:textSize="40sp"/>
+        tools:listItem="@layout/solve_list_item" />
 
 </FrameLayout>
