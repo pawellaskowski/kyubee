@@ -2,7 +2,7 @@ package com.pjl.kyubee
 
 import android.app.Application
 import com.pjl.kyubee.model.SolveRepository
-import com.pjl.kyubee.model.SolveRoomDatabase
+import com.pjl.kyubee.model.SolveDatabase
 
 class KyubeeApp : Application() {
 
@@ -10,8 +10,8 @@ class KyubeeApp : Application() {
         return SolveRepository.getInstance(getDatabase())
     }
 
-    fun getDatabase(): SolveRoomDatabase {
-        return SolveRoomDatabase.getDatabase(this)
+    fun getDatabase(): SolveDatabase {
+        return SolveDatabase.getDatabase(this)
     }
 
 }

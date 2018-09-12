@@ -23,9 +23,10 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onDownEvent() {
         preparation.onDownEvent()
-        val current = timer.value
-        if (current?.isStopped() == true) {
-            repository.insert(Solve(current.accumulatedTime))
+        timer.value?.let {
+            if (it.isStopped()) {
+                repository.insert(Solve(it.accumulatedTime))
+            }
         }
     }
 
