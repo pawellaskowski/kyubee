@@ -4,13 +4,12 @@ import android.arch.lifecycle.MutableLiveData
 import com.pjl.kyubee.timer.Timer
 
 class SimpleStrategy(timer: MutableLiveData<Timer>) : PreparationStrategy(timer) {
+
     override fun onDownEvent() {
-        when (timer.value?.state) {
-            Timer.State.RUNNING -> {
-                timer.value = timer.value?.stop()
-            }
-            else -> {
-                timer.value = timer.value?.prepare()
+        timer.value?.let {
+            when (it.state) {
+                Timer.State.RUNNING -> timer.value = it.stop()
+                else -> timer.value = it.prepare()
             }
         }
         super.onDownEvent()
@@ -18,14 +17,12 @@ class SimpleStrategy(timer: MutableLiveData<Timer>) : PreparationStrategy(timer)
 
     override fun onUpEvent() {
         super.onUpEvent()
-        when (timer.value?.state) {
-            Timer.State.READY -> {
-                timer.value = timer.value?.start()
+        timer.value?.let {
+            when (it.state) {
+                Timer.State.READY -> timer.value = it.start()
+                Timer.State.PREPARING -> timer.value = it.reset()
+                else -> return
             }
-            Timer.State.PREPARING -> {
-                timer.value = timer.value?.reset()
-            }
-            else -> return
         }
     }
 }
