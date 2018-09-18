@@ -1,32 +1,38 @@
 package com.pjl.kyubee.timer
 
-import android.os.SystemClock
+import com.pjl.kyubee.utilities.now
 
-class Timer(val state: State, val startTime: Long, val accumulatedTime: Long) {
-    enum class State { RESET, PREPARING, READY, RUNNING, STOPPED }
+class Timer(val state: State, val startTime: Long, val accumulatedTime: Long = 0) {
+
+    enum class State { RESET, INSPECTING, PREPARING, READY, RUNNING, STOPPED }
 
     companion object {
         const val UNUSED = Long.MIN_VALUE
-        val RESET_TIMER = Timer(State.RESET, UNUSED, 0)
+        val RESET_TIMER = Timer(State.RESET, UNUSED)
     }
 
-    fun now(): Long = SystemClock.elapsedRealtime()
-
+    fun isInspecting() = state == State.INSPECTING
     fun isPreparing() = state == State.PREPARING
     fun isReady() = state == State.READY
     fun isRunning() = state == State.RUNNING
     fun isStopped() = state == State.STOPPED
     fun isReset() = state == State.RESET
 
-    fun prepare(): Timer = Timer(State.PREPARING, now(), 0)
+    fun inspect() = if (isPreparing()) {
+        Timer(State.INSPECTING, startTime)
+    } else {
+        Timer(State.INSPECTING, now())
+    }
 
-    fun ready(): Timer = Timer(State.READY, UNUSED, 0)
+    fun prepare() = Timer(State.PREPARING, startTime)
 
-    fun start(): Timer = Timer(State.RUNNING, now(), 0)
+    fun ready() = Timer(State.READY, startTime)
 
-    fun stop(): Timer = Timer(State.STOPPED, startTime, getTime())
+    fun start() = Timer(State.RUNNING, now())
 
-    fun reset(): Timer = RESET_TIMER
+    fun stop() = Timer(State.STOPPED, startTime, getTime())
 
-    fun getTime(): Long = now() - startTime
+    fun reset() = RESET_TIMER
+
+    fun getTime() = now() - startTime
 }

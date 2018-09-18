@@ -6,10 +6,10 @@ import com.pjl.kyubee.timer.Timer
 class SimpleStrategy(timer: MutableLiveData<Timer>) : PreparationStrategy(timer) {
 
     override fun onDownEvent() {
-        timer.value?.let {
-            when (it.state) {
-                Timer.State.RUNNING -> timer.value = it.stop()
-                else -> timer.value = it.prepare()
+        timer.value = timer.value?.let {
+            when {
+                it.isRunning() -> it.stop()
+                else -> it.prepare()
             }
         }
         super.onDownEvent()
@@ -17,11 +17,11 @@ class SimpleStrategy(timer: MutableLiveData<Timer>) : PreparationStrategy(timer)
 
     override fun onUpEvent() {
         super.onUpEvent()
-        timer.value?.let {
-            when (it.state) {
-                Timer.State.READY -> timer.value = it.start()
-                Timer.State.PREPARING -> timer.value = it.reset()
-                else -> return
+        timer.value = timer.value?.let {
+            when {
+                it.isReady() -> it.start()
+                it.isPreparing() -> it.reset()
+                else -> it
             }
         }
     }

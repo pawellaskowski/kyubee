@@ -6,20 +6,27 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.pjl.kyubee.KyubeeApp
 import com.pjl.kyubee.model.Solve
+import com.pjl.kyubee.model.preparation.InspectionStrategy
 import com.pjl.kyubee.model.preparation.PreparationStrategy
-import com.pjl.kyubee.model.preparation.SimpleStrategy
+import com.pjl.kyubee.utilities.inspectionDuration
+import com.pjl.kyubee.utilities.now
 
 class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = (application as KyubeeApp).getRepository()
     private val timer: MutableLiveData<Timer> = MutableLiveData()
-    private var preparation: PreparationStrategy = SimpleStrategy(timer)
+    private var preparation: PreparationStrategy = InspectionStrategy(timer)
 
     init {
         timer.value = Timer.RESET_TIMER
     }
 
     fun getTimer(): LiveData<Timer> = timer
+
+    fun remainingInspection(): Long {
+        val startTime = timer.value?.startTime ?: now()
+        return (startTime + inspectionDuration - now()) / 1000
+    }
 
     fun onDownEvent() {
         preparation.onDownEvent()
@@ -33,5 +40,4 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     fun onUpEvent() {
         preparation.onUpEvent()
     }
-
 }
