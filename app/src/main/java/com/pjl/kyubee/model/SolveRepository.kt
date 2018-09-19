@@ -1,12 +1,12 @@
 package com.pjl.kyubee.model
 
-import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import android.os.AsyncTask
 
 class SolveRepository private constructor(database: SolveDatabase) {
 
     private val solveDao = database.solveDao()
-    private val allSolves: LiveData<List<Solve>>
+    private val allSolves: DataSource.Factory<Int, Solve>
 
     init {
         allSolves = solveDao.getAllSolves()
