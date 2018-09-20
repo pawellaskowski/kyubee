@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.fragment_history.view.*
 
 class HistoryFragment : Fragment() {
 
-    lateinit var viewModel: HistoryViewModel
-    lateinit var adapter: HistoryAdapter
+    private lateinit var viewModel: HistoryViewModel
+    private lateinit var adapter: HistoryAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,7 +30,7 @@ class HistoryFragment : Fragment() {
         adapter = HistoryAdapter()
         viewModel = ViewModelProviders.of(activity!!).get(HistoryViewModel::class.java)
         viewModel.getAllSolves().observe(this, Observer {
-            adapter.setSolves(it)
+            adapter.submitList(it)
         })
     }
 

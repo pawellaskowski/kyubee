@@ -1,15 +1,18 @@
 package com.pjl.kyubee.model
 
 import android.arch.lifecycle.LiveData
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import android.os.AsyncTask
 
 class SolveRepository private constructor(database: SolveDatabase) {
 
     private val solveDao = database.solveDao()
-    private val allSolves: LiveData<List<Solve>>
+    private val allSolves: LiveData<PagedList<Solve>>
 
     init {
-        allSolves = solveDao.getAllSolves()
+        val factory = solveDao.getAllSolves()
+        allSolves = LivePagedListBuilder(factory, 30).build()
     }
 
     fun getAllSolves() = allSolves
