@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".history.HistoryFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/solve_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listItem="@layout/solve_list_item" />
 
 </FrameLayout>
