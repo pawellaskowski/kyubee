@@ -1,7 +1,9 @@
 package com.pjl.kyubee.timer
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
@@ -11,11 +13,17 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.pjl.kyubee.R
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.fragment_timer.view.*
+import javax.inject.Inject
 
 
 class TimerFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: TimerViewModel
     private val timeUpdate = TimeUpdate()
@@ -24,7 +32,7 @@ class TimerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_timer, container, false)
-        view.container.setOnTouchListener { v, event ->
+        view.container.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> viewModel.onDownEvent()
                 MotionEvent.ACTION_UP -> viewModel.onUpEvent()
@@ -36,12 +44,17 @@ class TimerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!).get(TimerViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(TimerViewModel::class.java)
         subscribeUi()
     }
 
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
+
     private fun subscribeUi() {
-        viewModel.getTimer().observe(this, Observer {
+        viewModel.timer.observe(this, Observer {
             if (it != null) {
                 Log.d("viewmodel", "state = ${it.state}")
                 indicateNotReady()
@@ -66,7 +79,7 @@ class TimerFragment : Fragment() {
 
     private fun stopUpdatingTime() {
         timer.removeCallbacks(timeUpdate)
-        timer.text = viewModel.getTimer().value?.accumulatedTime.toString()
+        timer.text = viewModel.timer.value?.accumulatedTime.toString()
     }
 
     private fun stopUpdatingInspection() {
@@ -95,7 +108,7 @@ class TimerFragment : Fragment() {
         override fun run() {
             if (isResumed) {
                 with (timer) {
-                    timer.text = viewModel.getTimer().value?.getTime().toString()
+                    timer.text = viewModel.timer.value?.getTime().toString()
                     timer.postDelayed(this@TimeUpdate, 1)
                 }
             }

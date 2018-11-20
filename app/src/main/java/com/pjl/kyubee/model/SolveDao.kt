@@ -1,5 +1,6 @@
 package com.pjl.kyubee.model
 
+import android.arch.lifecycle.LiveData
 import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
@@ -15,6 +16,6 @@ interface SolveDao {
     fun deleteAll()
 
     @Query("SELECT * FROM Solve")
-    fun getAllSolves(): DataSource.Factory<Int, Solve>
+    fun getAllSolves(): LiveData<List<Solve>>
 
 }

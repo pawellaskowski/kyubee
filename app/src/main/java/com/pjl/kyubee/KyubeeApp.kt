@@ -1,17 +1,25 @@
 package com.pjl.kyubee
 
+import android.app.Activity
 import android.app.Application
-import com.pjl.kyubee.model.SolveRepository
-import com.pjl.kyubee.model.SolveDatabase
+import com.pjl.kyubee.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
-class KyubeeApp : Application() {
+class KyubeeApp : Application(), HasActivityInjector {
 
-    fun getRepository(): SolveRepository {
-        return SolveRepository.getInstance(getDatabase())
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+    override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
+
+    override fun onCreate() {
+        super.onCreate()
+        DaggerAppComponent.builder()
+                .application(this)
+                .build()
+                .inject(this)
     }
-
-    fun getDatabase(): SolveDatabase {
-        return SolveDatabase.getDatabase(this)
-    }
-
 }

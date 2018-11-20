@@ -6,11 +6,6 @@ class Timer(val state: State, val startTime: Long, val accumulatedTime: Long = 0
 
     enum class State { RESET, INSPECTING, PREPARING, READY, RUNNING, STOPPED }
 
-    companion object {
-        const val UNUSED = Long.MIN_VALUE
-        val RESET_TIMER = Timer(State.RESET, UNUSED)
-    }
-
     fun isInspecting() = state == State.INSPECTING
     fun isPreparing() = state == State.PREPARING
     fun isReady() = state == State.READY
@@ -35,4 +30,9 @@ class Timer(val state: State, val startTime: Long, val accumulatedTime: Long = 0
     fun reset() = RESET_TIMER
 
     fun getTime() = now() - startTime
+
+    companion object {
+        private const val UNUSED = Long.MIN_VALUE
+        val RESET_TIMER = Timer(State.RESET, UNUSED)
+    }
 }

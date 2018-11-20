@@ -1,27 +1,20 @@
 package com.pjl.kyubee.timer
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import com.pjl.kyubee.KyubeeApp
+import android.arch.lifecycle.ViewModel
 import com.pjl.kyubee.model.Solve
-import com.pjl.kyubee.model.preparation.InspectionStrategy
+import com.pjl.kyubee.model.SolveRepository
 import com.pjl.kyubee.model.preparation.PreparationStrategy
 import com.pjl.kyubee.utilities.inspectionDuration
 import com.pjl.kyubee.utilities.now
+import javax.inject.Inject
 
-class TimerViewModel(application: Application) : AndroidViewModel(application) {
+class TimerViewModel @Inject constructor(
+        private val repository: SolveRepository,
+        private val preparation: PreparationStrategy
+) : ViewModel() {
 
-    private val repository = (application as KyubeeApp).getRepository()
-    private val timer: MutableLiveData<Timer> = MutableLiveData()
-    private var preparation: PreparationStrategy = InspectionStrategy(timer)
-
-    init {
-        timer.value = Timer.RESET_TIMER
-    }
-
-    fun getTimer(): LiveData<Timer> = timer
+    val timer: LiveData<Timer> = preparation.timer
 
     fun remainingInspection(): Long {
         val startTime = timer.value?.startTime ?: now()

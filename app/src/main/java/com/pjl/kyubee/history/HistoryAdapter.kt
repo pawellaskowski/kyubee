@@ -1,35 +1,41 @@
 package com.pjl.kyubee.history
 
-import android.arch.paging.PagedListAdapter
-import android.support.v7.util.DiffUtil
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.pjl.kyubee.R
 import com.pjl.kyubee.model.Solve
+import kotlinx.android.synthetic.main.history_item.view.*
 
-class HistoryAdapter : PagedListAdapter<Solve, HistoryViewHolder>(SOLVE_COMPARATOR) {
+class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.SolveViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
+    private var solves: List<Solve>? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SolveViewHolder {
         val itemView = LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.history_item, parent, false)
-        return HistoryViewHolder(itemView)
+        return SolveViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        val solve = getItem(position)
-        if (solve != null) {
-            holder.bind(solve)
+    override fun getItemCount(): Int = solves?.size ?: 0
+
+    override fun onBindViewHolder(holder: SolveViewHolder, position: Int) {
+        if (solves != null) {
+            val current = solves?.get(position)
+            holder.itemView.solve_id.text = current?.id.toString()
+            holder.itemView.solve_time.text = current?.time.toString()
+        } else {
+            holder.itemView.solve_time.text = "No solve"
         }
     }
 
-    companion object {
-        private val SOLVE_COMPARATOR = object : DiffUtil.ItemCallback<Solve>() {
-            override fun areContentsTheSame(oldItem: Solve, newItem: Solve): Boolean =
-                    oldItem == newItem
-
-            override fun areItemsTheSame(oldItem: Solve, newItem: Solve): Boolean =
-                    oldItem.id == newItem.id
-        }
+    fun setSolves(solves: List<Solve>?) {
+        this.solves = solves
+        notifyDataSetChanged()
     }
+
+    class SolveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
 }

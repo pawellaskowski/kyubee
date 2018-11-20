@@ -1,20 +1,14 @@
 package com.pjl.kyubee.history
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
-import com.pjl.kyubee.KyubeeApp
+import android.arch.lifecycle.ViewModel
 import com.pjl.kyubee.model.Solve
+import com.pjl.kyubee.model.SolveRepository
+import javax.inject.Inject
 
-class HistoryViewModel(application: Application) : AndroidViewModel(application) {
+class HistoryViewModel @Inject constructor(repository: SolveRepository) : ViewModel() {
 
-    private val repository = (application as KyubeeApp).getRepository()
-    private val allSolves: LiveData<PagedList<Solve>>
-
-    init {
-        allSolves = repository.getAllSolves()
-    }
+    private val allSolves = repository.getAllSolves()
 
     fun getAllSolves() = allSolves
 }

@@ -1,16 +1,24 @@
 package com.pjl.kyubee.model.preparation
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.os.Handler
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.holdDuration
 import com.pjl.kyubee.utilities.now
 
-abstract class PreparationStrategy(protected val timer: MutableLiveData<Timer>) {
+abstract class PreparationStrategy {
 
+    protected val _timer = MutableLiveData<Timer>()
+    val timer: LiveData<Timer>
+        get() = _timer
     private val handler = Handler()
     private val hold = Hold()
     private var preparationStartTime = Long.MIN_VALUE
+
+    init {
+        _timer.value = Timer.RESET_TIMER
+    }
 
     open fun onDownEvent() {
         handler.post(hold)
@@ -23,17 +31,16 @@ abstract class PreparationStrategy(protected val timer: MutableLiveData<Timer>) 
 
     protected inner class Hold : Runnable {
         override fun run() {
-            timer.value?.let {
+            _timer.value?.let {
                 if (it.isPreparing()) {
                     val holdTime = now() - preparationStartTime
                     if (holdTime < holdDuration) {
                         handler.postDelayed(this, 10)
                     } else {
-                        timer.value = it.ready()
+                        _timer.value = it.ready()
                     }
                 }
             }
-
         }
     }
 }
