@@ -1,9 +1,6 @@
 package com.pjl.kyubee.model.preparation
 
-import android.arch.lifecycle.MutableLiveData
-import com.pjl.kyubee.timer.Timer
-
-class SimpleStrategy : PreparationStrategy() {
+class SimpleStrategy : TimingControlStrategy() {
 
     override fun onDownEvent() {
         _timer.value = _timer.value?.let {

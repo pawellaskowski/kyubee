@@ -4,16 +4,18 @@ import android.app.Application
 import android.content.Context
 import com.pjl.kyubee.R
 import com.pjl.kyubee.model.preparation.InspectionStrategy
-import com.pjl.kyubee.model.preparation.PreparationStrategy
+import com.pjl.kyubee.model.preparation.TimingControlStrategy
 import com.pjl.kyubee.model.preparation.SimpleStrategy
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class TimerModule {
 
+    @Singleton
     @Provides
-    fun providesPreparationStrategy(app: Application): PreparationStrategy {
+    fun providesTimingControlStrategy(app: Application): TimingControlStrategy {
         val context = app.applicationContext
         val isSimpleStrategy = context
                 .getSharedPreferences(context.getString(R.string.preference_file_key),

@@ -1,9 +1,7 @@
 package com.pjl.kyubee.history
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-import com.pjl.kyubee.model.Solve
-import com.pjl.kyubee.model.SolveRepository
+import com.pjl.kyubee.repository.SolveRepository
 import javax.inject.Inject
 
 class HistoryViewModel @Inject constructor(repository: SolveRepository) : ViewModel() {

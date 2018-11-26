@@ -13,7 +13,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.pjl.kyubee.R
-import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.fragment_timer.view.*
@@ -54,7 +53,7 @@ class TimerFragment : Fragment() {
     }
 
     private fun subscribeUi() {
-        viewModel.timer.observe(this, Observer {
+        viewModel.getTimer().observe(this, Observer {
             if (it != null) {
                 Log.d("viewmodel", "state = ${it.state}")
                 indicateNotReady()
@@ -79,7 +78,7 @@ class TimerFragment : Fragment() {
 
     private fun stopUpdatingTime() {
         timer.removeCallbacks(timeUpdate)
-        timer.text = viewModel.timer.value?.accumulatedTime.toString()
+        timer.text = viewModel.getTimer().value?.accumulatedTime.toString()
     }
 
     private fun stopUpdatingInspection() {
@@ -108,7 +107,7 @@ class TimerFragment : Fragment() {
         override fun run() {
             if (isResumed) {
                 with (timer) {
-                    timer.text = viewModel.timer.value?.getTime().toString()
+                    timer.text = viewModel.getTimer().value?.getTime().toString()
                     timer.postDelayed(this@TimeUpdate, 1)
                 }
             }

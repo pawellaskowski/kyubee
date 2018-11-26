@@ -1,17 +1,15 @@
-package com.pjl.kyubee.model
+package com.pjl.kyubee.database
 
 import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
-import android.content.Context
-import com.pjl.kyubee.utilities.DATABASE_NAME
+import com.pjl.kyubee.model.Solve
 
 @Database(
         entities = [Solve::class],
         version = 1,
         exportSchema = false
 )
-abstract class SolveDatabase : RoomDatabase() {
+abstract class KyubeeDatabase : RoomDatabase() {
 
     abstract fun solveDao(): SolveDao
 }

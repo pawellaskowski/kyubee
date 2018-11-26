@@ -7,7 +7,7 @@ import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.holdDuration
 import com.pjl.kyubee.utilities.now
 
-abstract class PreparationStrategy {
+abstract class TimingControlStrategy {
 
     protected val _timer = MutableLiveData<Timer>()
     val timer: LiveData<Timer>

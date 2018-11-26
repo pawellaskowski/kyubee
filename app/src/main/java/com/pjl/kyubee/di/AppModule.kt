@@ -2,9 +2,9 @@ package com.pjl.kyubee.di
 
 import android.app.Application
 import android.arch.persistence.room.Room
-import com.pjl.kyubee.model.SolveDao
-import com.pjl.kyubee.model.SolveRepository
-import com.pjl.kyubee.model.SolveDatabase
+import com.pjl.kyubee.database.SolveDao
+import com.pjl.kyubee.repository.SolveRepository
+import com.pjl.kyubee.database.KyubeeDatabase
 import com.pjl.kyubee.utilities.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
@@ -15,14 +15,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSolveDatabase(app: Application): SolveDatabase = Room
-                .databaseBuilder(app, SolveDatabase::class.java, DATABASE_NAME)
+    fun provideSolveDatabase(app: Application): KyubeeDatabase = Room
+                .databaseBuilder(app, KyubeeDatabase::class.java, DATABASE_NAME)
                 .allowMainThreadQueries()
                 .build()
 
     @Singleton
     @Provides
-    fun provideSolveDao(db: SolveDatabase): SolveDao = db.solveDao()
+    fun provideSolveDao(db: KyubeeDatabase): SolveDao = db.solveDao()
 
     @Singleton
     @Provides

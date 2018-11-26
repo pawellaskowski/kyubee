@@ -1,11 +1,10 @@
 package com.pjl.kyubee.model.preparation
 
-import android.arch.lifecycle.MutableLiveData
 import android.os.Handler
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.inspectionDuration
 
-class InspectionStrategy : PreparationStrategy() {
+class InspectionStrategy : TimingControlStrategy() {
 
     private val handler = Handler()
     private val inspectionRunnable = InspectionRunnable()
