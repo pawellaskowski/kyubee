@@ -1,7 +1,7 @@
 package com.pjl.kyubee.di
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.pjl.kyubee.database.SolveDao
 import com.pjl.kyubee.repository.SolveRepository
 import com.pjl.kyubee.database.KyubeeDatabase

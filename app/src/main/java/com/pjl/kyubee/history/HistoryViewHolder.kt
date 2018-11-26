@@ -1,6 +1,6 @@
 package com.pjl.kyubee.history
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.pjl.kyubee.model.Solve
 import kotlinx.android.synthetic.main.history_item.view.*

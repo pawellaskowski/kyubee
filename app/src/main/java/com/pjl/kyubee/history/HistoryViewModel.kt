@@ -1,6 +1,6 @@
 package com.pjl.kyubee.history
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.pjl.kyubee.repository.SolveRepository
 import javax.inject.Inject
 

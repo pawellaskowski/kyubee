@@ -1,7 +1,7 @@
 package com.pjl.kyubee.timer
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.pjl.kyubee.model.Solve
 import com.pjl.kyubee.repository.SolveRepository
 import com.pjl.kyubee.model.preparation.TimingControlStrategy

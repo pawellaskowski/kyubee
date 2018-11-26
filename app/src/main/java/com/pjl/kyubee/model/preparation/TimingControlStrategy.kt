@@ -1,7 +1,7 @@
 package com.pjl.kyubee.model.preparation
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.os.Handler
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.holdDuration
