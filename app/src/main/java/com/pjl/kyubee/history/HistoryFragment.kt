@@ -24,7 +24,7 @@ class HistoryFragment : Fragment() {
     private lateinit var viewModel: HistoryViewModel
     private lateinit var adapter: HistoryAdapter
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
@@ -39,7 +39,7 @@ class HistoryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = HistoryAdapter()
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HistoryViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(HistoryViewModel::class.java)
         viewModel.getAllSolves().observe(this, Observer {
             adapter.setSolves(it)
         })

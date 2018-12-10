@@ -43,17 +43,19 @@ class TimerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(TimerViewModel::class.java)
+        viewModel = ViewModelProviders
+                .of(requireActivity(), viewModelFactory)
+                .get(TimerViewModel::class.java)
         subscribeUi()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 
     private fun subscribeUi() {
-        viewModel.getTimer().observe(this, Observer {
+        viewModel.timer.observe(this, Observer {
             if (it != null) {
                 Log.d("viewmodel", "state = ${it.state}")
                 indicateNotReady()
@@ -78,7 +80,7 @@ class TimerFragment : Fragment() {
 
     private fun stopUpdatingTime() {
         timer.removeCallbacks(timeUpdate)
-        timer.text = viewModel.getTimer().value?.accumulatedTime.toString()
+        timer.text = viewModel.timer.value?.accumulatedTime.toString()
     }
 
     private fun stopUpdatingInspection() {
@@ -107,8 +109,8 @@ class TimerFragment : Fragment() {
         override fun run() {
             if (isResumed) {
                 with (timer) {
-                    timer.text = viewModel.getTimer().value?.getTime().toString()
-                    timer.postDelayed(this@TimeUpdate, 1)
+                    timer.text = viewModel.timer.value?.getTime().toString()
+                    timer.postDelayed(this@TimeUpdate, 10)
                 }
             }
         }

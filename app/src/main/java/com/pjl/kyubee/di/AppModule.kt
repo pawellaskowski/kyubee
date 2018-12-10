@@ -1,11 +1,11 @@
 package com.pjl.kyubee.di
 
 import android.app.Application
-import androidx.room.Room
-import com.pjl.kyubee.database.SolveDao
-import com.pjl.kyubee.repository.SolveRepository
+import com.pjl.kyubee.database.CategoryDao
 import com.pjl.kyubee.database.KyubeeDatabase
-import com.pjl.kyubee.utilities.DATABASE_NAME
+import com.pjl.kyubee.database.SolveDao
+import com.pjl.kyubee.repository.CategoryRepository
+import com.pjl.kyubee.repository.SolveRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -15,10 +15,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSolveDatabase(app: Application): KyubeeDatabase = Room
-                .databaseBuilder(app, KyubeeDatabase::class.java, DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build()
+    fun provideDatabase(app: Application): KyubeeDatabase = KyubeeDatabase.getDatabase(app)
 
     @Singleton
     @Provides
@@ -27,4 +24,12 @@ class AppModule {
     @Singleton
     @Provides
     fun provideSolveRepository(solveDao: SolveDao): SolveRepository = SolveRepository(solveDao)
+
+    @Singleton
+    @Provides
+    fun provideCategoryDao(db: KyubeeDatabase): CategoryDao = db.categoryDao()
+
+    @Singleton
+    @Provides
+    fun provideCategoryRepository(categoryDao: CategoryDao) = CategoryRepository(categoryDao)
 }

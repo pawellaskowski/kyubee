@@ -1,16 +1,17 @@
-package com.pjl.kyubee.model.preparation
+package com.pjl.kyubee.timer.strategy
 
 import android.os.Handler
+import androidx.lifecycle.MutableLiveData
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.inspectionDuration
 
-class InspectionStrategy : TimingControlStrategy() {
+class InspectionStrategy(timer: MutableLiveData<Timer>) : TimingStrategy(timer) {
 
     private val handler = Handler()
     private val inspectionRunnable = InspectionRunnable()
 
     override fun onDownEvent() {
-        _timer.value = _timer.value?.let {
+        timer.value = timer.value?.let {
             when {
                 it.isRunning() -> it.stop()
                 it.isInspecting() -> it.prepare()
@@ -25,7 +26,7 @@ class InspectionStrategy : TimingControlStrategy() {
 
     override fun onUpEvent() {
         super.onUpEvent()
-        _timer.value = _timer.value?.let {
+        timer.value = timer.value?.let {
             when {
                 it.isReady() -> {
                     handler.removeCallbacks(inspectionRunnable)
@@ -39,11 +40,11 @@ class InspectionStrategy : TimingControlStrategy() {
 
     private inner class InspectionRunnable : Runnable {
         override fun run() {
-            _timer.value?.let {
+            timer.value?.let {
                 if (it.getTime() < inspectionDuration) {
                     handler.postDelayed(this, 10)
                 } else {
-                    _timer.value = Timer.RESET_TIMER
+                    timer.value = Timer.RESET_TIMER
                 }
             }
         }

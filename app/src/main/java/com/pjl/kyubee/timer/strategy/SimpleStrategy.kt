@@ -1,9 +1,12 @@
-package com.pjl.kyubee.model.preparation
+package com.pjl.kyubee.timer.strategy
 
-class SimpleStrategy : TimingControlStrategy() {
+import androidx.lifecycle.MutableLiveData
+import com.pjl.kyubee.timer.Timer
+
+class SimpleStrategy(timer: MutableLiveData<Timer>) : TimingStrategy(timer) {
 
     override fun onDownEvent() {
-        _timer.value = _timer.value?.let {
+        timer.value = timer.value?.let {
             when {
                 it.isRunning() -> it.stop()
                 else -> it.prepare()
@@ -14,7 +17,7 @@ class SimpleStrategy : TimingControlStrategy() {
 
     override fun onUpEvent() {
         super.onUpEvent()
-        _timer.value = _timer.value?.let {
+        timer.value = timer.value?.let {
             when {
                 it.isReady() -> it.start()
                 it.isPreparing() -> it.reset()

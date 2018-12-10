@@ -1,23 +1,19 @@
-package com.pjl.kyubee.model.preparation
+package com.pjl.kyubee.timer.strategy
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.os.Handler
+import androidx.lifecycle.MutableLiveData
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.holdDuration
 import com.pjl.kyubee.utilities.now
 
-abstract class TimingControlStrategy {
+abstract class TimingStrategy(protected val timer: MutableLiveData<Timer>) {
 
-    protected val _timer = MutableLiveData<Timer>()
-    val timer: LiveData<Timer>
-        get() = _timer
     private val handler = Handler()
     private val hold = Hold()
     private var preparationStartTime = Long.MIN_VALUE
 
     init {
-        _timer.value = Timer.RESET_TIMER
+        timer.value = Timer.RESET_TIMER
     }
 
     open fun onDownEvent() {
@@ -31,13 +27,13 @@ abstract class TimingControlStrategy {
 
     protected inner class Hold : Runnable {
         override fun run() {
-            _timer.value?.let {
+            timer.value?.let {
                 if (it.isPreparing()) {
                     val holdTime = now() - preparationStartTime
                     if (holdTime < holdDuration) {
                         handler.postDelayed(this, 10)
                     } else {
-                        _timer.value = it.ready()
+                        timer.value = it.ready()
                     }
                 }
             }
