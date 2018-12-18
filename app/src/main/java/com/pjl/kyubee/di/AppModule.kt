@@ -6,6 +6,7 @@ import com.pjl.kyubee.database.KyubeeDatabase
 import com.pjl.kyubee.database.SolveDao
 import com.pjl.kyubee.repository.CategoryRepository
 import com.pjl.kyubee.repository.SolveRepository
+import com.pjl.kyubee.settings.SettingsController
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -32,4 +33,9 @@ class AppModule {
     @Singleton
     @Provides
     fun provideCategoryRepository(categoryDao: CategoryDao) = CategoryRepository(categoryDao)
+
+    @Singleton
+    @Provides
+    fun provideSettingsController(app: Application, repo: CategoryRepository) =
+            SettingsController(app, repo)
 }

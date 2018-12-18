@@ -1,10 +1,10 @@
 package com.pjl.kyubee.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.pjl.kyubee.model.Category
+import io.reactivex.Flowable
 
 @Dao
 interface CategoryDao {
@@ -13,8 +13,8 @@ interface CategoryDao {
     fun insert(category: Category)
 
     @Query("SELECT * FROM Category")
-    fun getAllCategories(): LiveData<List<Category>>
+    fun getAllCategories(): Flowable<List<Category>>
 
     @Query("SELECT * FROM Category WHERE name = :name")
-    fun getCategory(name: String): Category
+    fun getCategory(name: String): Flowable<Category>
 }

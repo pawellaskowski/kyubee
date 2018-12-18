@@ -1,9 +1,9 @@
 package com.pjl.kyubee.activity
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,14 +41,29 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 .of(this, viewModelFactory)
                 .get(ActivityViewModel::class.java)
 
+        subscribeSpinner(puzzle_spinner)
+    }
+
+    private fun subscribeSpinner(spinner: Spinner) {
         val adapter = CategoryAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
                 mutableListOf()
         )
-        puzzle_spinner.adapter = adapter
-        viewModel.categories.observe(this, Observer<List<Category>> {
+        spinner.adapter = adapter
+        viewModel.categories.observe(this, Observer {
             adapter.setCategories(it)
         })
+        viewModel.currentCategory.observe(this, Observer {
+            spinner.setSelection(adapter.getPosition(it))
+        })
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.selectCategory(parent?.getItemAtPosition(position) as Category)
+            }
+        }
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
