@@ -3,8 +3,10 @@ package com.pjl.kyubee.di
 import android.app.Application
 import com.pjl.kyubee.database.CategoryDao
 import com.pjl.kyubee.database.KyubeeDatabase
+import com.pjl.kyubee.database.SessionDao
 import com.pjl.kyubee.database.SolveDao
 import com.pjl.kyubee.repository.CategoryRepository
+import com.pjl.kyubee.repository.SessionRepository
 import com.pjl.kyubee.repository.SolveRepository
 import com.pjl.kyubee.settings.SettingsController
 import dagger.Module
@@ -36,6 +38,16 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSettingsController(app: Application, repo: CategoryRepository) =
-            SettingsController(app, repo)
+    fun provideSessionDao(db: KyubeeDatabase) = db.sessionDao()
+
+    @Singleton
+    @Provides
+    fun provideSessionRepository(sessionDao: SessionDao) = SessionRepository(sessionDao)
+
+    @Singleton
+    @Provides
+    fun provideSettingsController(app: Application,
+                                  categoryRepo: CategoryRepository,
+                                  sessionRepo: SessionRepository) =
+            SettingsController(app, categoryRepo, sessionRepo)
 }

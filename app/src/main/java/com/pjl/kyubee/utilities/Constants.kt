@@ -13,5 +13,3 @@ const val MEGAMINX_TAG = "Megaminx"
 const val PYRAMINX_TAG = "Pyraminx"
 const val SKEWB_TAG = "Skewb"
 const val SQUARE1_TAG = "Square-1"
-
-const val selected = "com.pjl.kyubee.SELECTED_CATEGORY"
