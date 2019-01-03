@@ -71,6 +71,10 @@ class TimerFragment : Fragment() {
                 }
             }
         })
+
+        viewModel.scramble.observe(this, Observer {
+            scramble.text = it
+        })
     }
 
     private fun stopUpdates() {

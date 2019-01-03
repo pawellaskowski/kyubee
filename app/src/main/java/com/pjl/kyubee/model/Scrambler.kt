@@ -16,5 +16,7 @@ enum class Scrambler(val tag: String, val puzzle: Puzzle) {
     MEGAMINX(MEGAMINX_TAG, MegaminxPuzzle()),
     PYRAMINX(PYRAMINX_TAG, PyraminxPuzzle()),
     SKEWB(SKEWB_TAG, SkewbPuzzle()),
-    SQUARE1(SQUARE1_TAG, SquareOneUnfilteredPuzzle())
+    SQUARE1(SQUARE1_TAG, SquareOneUnfilteredPuzzle());
+
+    fun generateScramble(): String = puzzle.generateScramble()
 }
