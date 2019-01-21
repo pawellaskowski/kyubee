@@ -13,7 +13,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.pjl.kyubee.R
 import com.pjl.kyubee.model.Category
-import com.pjl.kyubee.model.Session
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -34,16 +33,26 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val navController = findNavController(R.id.nav_host_fragment)
-        bottom_navigation.setupWithNavController(navController)
-
+        configureToolbar()
+        configureBottomNavigation()
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(ActivityViewModel::class.java)
 
-        subscribeCategorySpinner(puzzle_spinner)
-        subscribeSessionSpinner(session_spinner)
+        subscribeCategorySpinner(spinner)
+    }
+
+    private fun configureToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayShowHomeEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+    }
+
+    private fun configureBottomNavigation() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        bottom_navigation.setupWithNavController(navController)
     }
 
     private fun subscribeCategorySpinner(spinner: Spinner) {
@@ -52,7 +61,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 mutableListOf())
         spinner.adapter = adapter
         viewModel.categories.observe(this, Observer {
-            adapter.setCategories(it)
+            adapter.setCategories(it.data)
         })
         viewModel.currentCategory.observe(this, Observer {
             spinner.setSelection(adapter.getPosition(it))
@@ -67,29 +76,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    private fun subscribeSessionSpinner(spinner: Spinner) {
-        val adapter = SessionAdapter(this,
-                android.R.layout.simple_spinner_dropdown_item,
-                mutableListOf())
-        spinner.adapter = adapter
-        viewModel.sessions.observe(this, Observer {
-            adapter.setSessions(it)
-        })
-        viewModel.currentSession.observe(this, Observer {
-            spinner.setSelection(adapter.getPosition(it))
-        })
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selectSession(parent?.getItemAtPosition(position) as Session)
-            }
-        }
-    }
-
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 
-    override fun onSupportNavigateUp(): Boolean
-            = findNavController(R.id.nav_host_fragment).navigateUp()
+    override fun onSupportNavigateUp(): Boolean =
+            findNavController(R.id.nav_host_fragment).navigateUp()
 }

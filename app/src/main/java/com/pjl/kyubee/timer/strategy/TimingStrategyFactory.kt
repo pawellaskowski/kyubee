@@ -8,7 +8,7 @@ import com.pjl.kyubee.timer.Timer
 
 class TimingStrategyFactory(private val app: Application) {
 
-    fun createWith(timer: MutableLiveData<Timer>): TimingStrategy {
+    fun create(timer: Timer): TimingStrategy {
         val context = app.applicationContext
         val isSimpleStrategy = PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(context.getString(R.string.is_simple_strategy_key), true)

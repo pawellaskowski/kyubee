@@ -4,7 +4,7 @@ import com.pjl.kyubee.utilities.*
 import net.gnehzr.tnoodle.scrambles.Puzzle
 import puzzle.*
 
-enum class Scrambler(val tag: String, val puzzle: Puzzle) {
+enum class Scrambler(val tag: String, private val puzzle: Puzzle) {
 
     CUBE2(CUBE2_TAG, CubePuzzle(2)),
     CUBE3(CUBE3_TAG, CubePuzzle(3)),

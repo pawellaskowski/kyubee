@@ -3,26 +3,22 @@ package com.pjl.kyubee.timer.strategy
 import androidx.lifecycle.MutableLiveData
 import com.pjl.kyubee.timer.Timer
 
-class SimpleStrategy(timer: MutableLiveData<Timer>) : TimingStrategy(timer) {
+class SimpleStrategy(timer: Timer) : TimingStrategy(timer) {
 
     override fun onDownEvent() {
-        timer.value = timer.value?.let {
-            when {
-                it.isRunning() -> it.stop()
-                else -> it.prepare()
-            }
+        timer = when {
+            timer.isRunning() -> timer.stop()
+            else -> timer.prepare()
         }
         super.onDownEvent()
     }
 
     override fun onUpEvent() {
         super.onUpEvent()
-        timer.value = timer.value?.let {
-            when {
-                it.isReady() -> it.start()
-                it.isPreparing() -> it.reset()
-                else -> it
-            }
+        timer = when {
+            timer.isReady() -> timer.start()
+            timer.isPreparing() -> timer.reset()
+            else -> timer
         }
     }
 }

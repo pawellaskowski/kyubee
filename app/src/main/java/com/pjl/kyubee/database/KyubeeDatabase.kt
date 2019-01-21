@@ -8,14 +8,13 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pjl.kyubee.model.Category
 import com.pjl.kyubee.model.Scrambler
-import com.pjl.kyubee.model.Session
 import com.pjl.kyubee.model.Solve
 import com.pjl.kyubee.utilities.Converters
 import com.pjl.kyubee.utilities.DATABASE_NAME
 import com.pjl.kyubee.utilities.ioThread
 
 @Database(
-        entities = [Solve::class, Category::class, Session::class],
+        entities = [Solve::class, Category::class],
         version = 1,
         exportSchema = false
 )
@@ -25,8 +24,6 @@ abstract class KyubeeDatabase : RoomDatabase() {
     abstract fun solveDao(): SolveDao
 
     abstract fun categoryDao(): CategoryDao
-
-    abstract fun sessionDao(): SessionDao
 
     companion object {
         private var INSTANCE: KyubeeDatabase? = null
@@ -42,7 +39,6 @@ abstract class KyubeeDatabase : RoomDatabase() {
                                         enumValues<Scrambler>().forEach {
                                             INSTANCE?.categoryDao()?.insert(Category(it.tag, it))
                                         }
-                                        INSTANCE?.sessionDao()?.insert(Session("Session 1"))
                                     }
                                 }
                             })

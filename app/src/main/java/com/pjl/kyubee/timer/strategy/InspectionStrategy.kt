@@ -5,47 +5,42 @@ import androidx.lifecycle.MutableLiveData
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.utilities.inspectionDuration
 
-class InspectionStrategy(timer: MutableLiveData<Timer>) : TimingStrategy(timer) {
+class InspectionStrategy(timer: Timer) : TimingStrategy(timer) {
 
     private val handler = Handler()
     private val inspectionRunnable = InspectionRunnable()
 
     override fun onDownEvent() {
-        timer.value = timer.value?.let {
-            when {
-                it.isRunning() -> it.stop()
-                it.isInspecting() -> it.prepare()
-                else ->  {
-                    handler.post(inspectionRunnable)
-                    it.inspect()
-                }
+        timer = when {
+            timer.isRunning() -> timer.stop()
+            timer.isInspecting() -> timer.prepare()
+            else ->  {
+                handler.post(inspectionRunnable)
+                timer.inspect()
             }
         }
+
         super.onDownEvent()
     }
 
     override fun onUpEvent() {
         super.onUpEvent()
-        timer.value = timer.value?.let {
-            when {
-                it.isReady() -> {
-                    handler.removeCallbacks(inspectionRunnable)
-                    it.start()
-                }
-                it.isPreparing() -> it.inspect()
-                else -> it
+        timer = when {
+            timer.isReady() -> {
+                handler.removeCallbacks(inspectionRunnable)
+                timer.start()
             }
+            timer.isPreparing() -> timer.inspect()
+            else -> timer
         }
     }
 
     private inner class InspectionRunnable : Runnable {
         override fun run() {
-            timer.value?.let {
-                if (it.getTime() < inspectionDuration) {
-                    handler.postDelayed(this, 10)
-                } else {
-                    timer.value = Timer.RESET_TIMER
-                }
+            if (timer.getTime() < inspectionDuration) {
+                handler.postDelayed(this, 10)
+            } else {
+                timer = Timer.RESET_TIMER
             }
         }
     }

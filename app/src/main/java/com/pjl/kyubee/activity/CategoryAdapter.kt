@@ -24,9 +24,11 @@ class CategoryAdapter(
         return prepareView(position, convertView, parent)
     }
 
-    fun setCategories(newCategories: List<Category>) {
+    fun setCategories(newCategories: List<Category>?) {
         clear()
-        categories.addAll(newCategories)
+        if (newCategories != null) {
+            categories.addAll(newCategories)
+        }
         notifyDataSetChanged()
     }
 
