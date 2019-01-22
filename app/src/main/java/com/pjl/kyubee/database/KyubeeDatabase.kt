@@ -1,10 +1,10 @@
 package com.pjl.kyubee.database
 
 import android.app.Application
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
+import android.util.Log
+import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pjl.kyubee.model.Category
 import com.pjl.kyubee.model.Scrambler
@@ -24,26 +24,4 @@ abstract class KyubeeDatabase : RoomDatabase() {
     abstract fun solveDao(): SolveDao
 
     abstract fun categoryDao(): CategoryDao
-
-    companion object {
-        private var INSTANCE: KyubeeDatabase? = null
-
-        fun getDatabase(app: Application) =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: Room.databaseBuilder(app,
-                            KyubeeDatabase::class.java, DATABASE_NAME)
-                            .addCallback(object : RoomDatabase.Callback() {
-                                override fun onCreate(db: SupportSQLiteDatabase) {
-                                    super.onCreate(db)
-                                    ioThread {
-                                        enumValues<Scrambler>().forEach {
-                                            INSTANCE?.categoryDao()?.insert(Category(it.tag, it))
-                                        }
-                                    }
-                                }
-                            })
-                            .build()
-                            .also { INSTANCE = it }
-                }
-    }
 }

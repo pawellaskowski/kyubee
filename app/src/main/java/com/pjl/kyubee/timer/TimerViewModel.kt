@@ -5,24 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.pjl.kyubee.CategoryUseCase
 import com.pjl.kyubee.ScrambleUseCase
 import com.pjl.kyubee.TimerUseCase
-import com.pjl.kyubee.model.Category
-import com.pjl.kyubee.model.Solve
-import com.pjl.kyubee.repository.SolveRepository
-import com.pjl.kyubee.settings.SettingsController
-import com.pjl.kyubee.timer.strategy.TimingStrategyFactory
-import com.pjl.kyubee.utilities.inspectionDuration
-import com.pjl.kyubee.utilities.ioThread
-import com.pjl.kyubee.utilities.now
 import com.pjl.kyubee.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class TimerViewModel @Inject constructor(
         private val timerUseCase: TimerUseCase,
-        private val scrambleUseCase: ScrambleUseCase,
+        scrambleUseCase: ScrambleUseCase,
         categoryUseCase: CategoryUseCase
 ) : BaseViewModel(
     categoryUseCase
@@ -49,10 +40,10 @@ class TimerViewModel @Inject constructor(
     fun remainingInspection() = timerUseCase.remainingInspection()
 
     fun onDownEvent() {
-        timerUseCase.onDownEvent()
+        _timer.value = timerUseCase.onDownEvent()
     }
 
     fun onUpEvent() {
-        timerUseCase.onUpEvent()
+        _timer.value = timerUseCase.onUpEvent()
     }
 }

@@ -1,6 +1,7 @@
 package com.pjl.kyubee.settings
 
 import android.app.Application
+import android.util.Log
 import androidx.preference.PreferenceManager
 import com.pjl.kyubee.R
 import com.pjl.kyubee.model.Category
@@ -28,9 +29,11 @@ class SettingsController(
     init {
         categoryRepo.getCategory(preferredCategoryName())
                 .subscribeOn(Schedulers.io())
-                .subscribe {
+                .subscribe ({
                     category -> _categorySubject.onNext(category)
-                }
+                }, {
+                    Log.d("__category", "Message: ${it.message}")
+                })
                 .addTo(disposables)
     }
 

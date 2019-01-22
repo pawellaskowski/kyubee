@@ -10,7 +10,7 @@ class InspectionStrategy(timer: Timer) : TimingStrategy(timer) {
     private val handler = Handler()
     private val inspectionRunnable = InspectionRunnable()
 
-    override fun onDownEvent() {
+    override fun onDown(): Timer {
         timer = when {
             timer.isRunning() -> timer.stop()
             timer.isInspecting() -> timer.prepare()
@@ -19,12 +19,10 @@ class InspectionStrategy(timer: Timer) : TimingStrategy(timer) {
                 timer.inspect()
             }
         }
-
-        super.onDownEvent()
+        return timer
     }
 
-    override fun onUpEvent() {
-        super.onUpEvent()
+    override fun onUp(): Timer {
         timer = when {
             timer.isReady() -> {
                 handler.removeCallbacks(inspectionRunnable)
@@ -33,6 +31,7 @@ class InspectionStrategy(timer: Timer) : TimingStrategy(timer) {
             timer.isPreparing() -> timer.inspect()
             else -> timer
         }
+        return timer
     }
 
     private inner class InspectionRunnable : Runnable {

@@ -1,10 +1,12 @@
 package com.pjl.kyubee
 
+import com.pjl.kyubee.timer.Timer
+
 interface TimerUseCase {
 
-    fun onDownEvent()
+    fun onDownEvent(): Timer
 
-    fun onUpEvent()
+    fun onUpEvent(): Timer
 
     fun remainingInspection(): Long
 }

@@ -13,12 +13,12 @@ class TimerInteractor @Inject constructor(
     private val timer = Timer.RESET_TIMER
     private val timingController = strategyFactory.create(timer)
 
-    override fun onDownEvent() {
-        timingController.onDownEvent()
+    override fun onDownEvent(): Timer {
+        return timingController.onDownEvent()
     }
 
-    override fun onUpEvent() {
-        timingController.onUpEvent()
+    override fun onUpEvent(): Timer {
+        return timingController.onUpEvent()
     }
 
     override fun remainingInspection(): Long {
