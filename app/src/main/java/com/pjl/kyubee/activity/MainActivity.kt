@@ -3,7 +3,6 @@ package com.pjl.kyubee.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 .of(this, viewModelFactory)
                 .get(ActivityViewModel::class.java)
 
-        subscribeCategorySpinner(spinner)
+        configureCategorySpinner()
     }
 
     private fun configureToolbar() {
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         bottom_navigation.setupWithNavController(navController)
     }
 
-    private fun subscribeCategorySpinner(spinner: Spinner) {
+    private fun configureCategorySpinner() {
         val adapter = CategoryAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
                 mutableListOf())

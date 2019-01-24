@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kyubee</string>
+    <string name="scramble_not_generated">Could not generate a scramble</string>
 </resources>

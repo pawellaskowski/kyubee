@@ -12,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.pjl.kyubee.DataHolder
 import com.pjl.kyubee.R
+import com.pjl.kyubee.Status
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.fragment_timer.view.*
@@ -56,24 +58,37 @@ class TimerFragment : Fragment() {
 
     private fun subscribeUi() {
         viewModel.timer.observe(this, Observer {
-            if (it != null) {
-                Log.d("viewmodel", "state = ${it.state}")
-                indicateNotReady()
-                when {
-                    it.isRunning() -> {
-                        stopUpdatingInspection()
-                        startUpdatingTime()
-                    }
-                    it.isStopped() -> stopUpdates()
-                    it.isReady() -> indicateReady()
-                    it.isInspecting() -> startUpdatingInspection()
-                    it.isReset() -> stopUpdates()
+            indicateNotReady()
+            when {
+                it.isRunning() -> {
+                    stopUpdatingInspection()
+                    startUpdatingTime()
                 }
+                it.isStopped() -> stopUpdates()
+                it.isReady() -> indicateReady()
+                it.isInspecting() -> startUpdatingInspection()
+                it.isReset() -> stopUpdates()
             }
         })
 
         viewModel.scramble.observe(this, Observer {
-            scramble.text = it
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progress.visibility = View.GONE
+                    scramble.visibility = View.VISIBLE
+                    scramble.text = it.data
+                }
+                Status.LOADING -> {
+                    scramble.visibility = View.GONE
+                    progress.visibility =  View.VISIBLE
+
+                }
+                Status.ERROR -> {
+                    progress.visibility = View.GONE
+                    scramble.visibility = View.VISIBLE
+                    scramble.text = getString(R.string.scramble_not_generated)
+                }
+            }
         })
     }
 

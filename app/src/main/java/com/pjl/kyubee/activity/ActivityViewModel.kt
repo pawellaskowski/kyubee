@@ -6,8 +6,6 @@ import com.pjl.kyubee.CategoryUseCase
 import com.pjl.kyubee.DataHolder
 import com.pjl.kyubee.Status
 import com.pjl.kyubee.model.Category
-import com.pjl.kyubee.repository.CategoryRepository
-import com.pjl.kyubee.settings.SettingsController
 import com.pjl.kyubee.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -24,16 +22,16 @@ class ActivityViewModel @Inject constructor(
 
     init {
         categoryUseCase.getCategoryList()
-                .subscribeOn(Schedulers.io()) // Schedulers.computation() ?
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
-                    _categories.value = DataHolder(Status.LOADING, null)
+                    _categories.postValue(DataHolder(Status.LOADING, null))
                 }
                 .subscribe ({
-                    _categories.value = DataHolder(Status.SUCCESS, it)
-                    _currentCategory.value = categoryUseCase.getCurrentCategory()
+                    _categories.postValue(DataHolder(Status.SUCCESS, it))
+                    _currentCategory.postValue(categoryUseCase.getCurrentCategory())
                 }, {
-                    _categories.value = DataHolder(Status.ERROR, null)
+                    _categories.postValue(DataHolder(Status.ERROR, null))
                 })
                 .addTo(compositeDisposable)
     }

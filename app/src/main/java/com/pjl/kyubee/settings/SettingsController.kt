@@ -7,6 +7,7 @@ import com.pjl.kyubee.R
 import com.pjl.kyubee.model.Category
 import com.pjl.kyubee.repository.CategoryRepository
 import com.pjl.kyubee.utilities.CUBE3_TAG
+import com.pjl.kyubee.utilities.ioThread
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -50,11 +51,9 @@ class SettingsController(
                     selectedCategory.name)
             apply()
         }
-        _categorySubject.onNext(selectedCategory)
-    }
-
-    fun clearDisposables() {
-        disposables.clear()
+        ioThread {
+            _categorySubject.onNext(selectedCategory)
+        }
     }
 
     fun getCurrentCategory(): Category {

@@ -4,7 +4,7 @@ import io.reactivex.Observable
 
 interface ScrambleUseCase {
 
-    fun generateScramble(): String
+    fun scramble()
 
     fun getScrambleObservable(): Observable<String>
 }

@@ -2,7 +2,6 @@ package com.pjl.kyubee
 
 import com.pjl.kyubee.model.Category
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -15,7 +14,6 @@ class ScrambleInteractor @Inject constructor(categoryUseCase: CategoryUseCase) :
     init {
         categoryUseCase.getCategoryObservable()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .map {
                     category = it
                     generateScramble()
@@ -27,7 +25,11 @@ class ScrambleInteractor @Inject constructor(categoryUseCase: CategoryUseCase) :
         return scrambleSubject
     }
 
-    override fun generateScramble(): String {
+    override fun scramble() {
+        scrambleSubject.onNext(generateScramble())
+    }
+
+    private fun generateScramble(): String {
         return category.scrambler.generateScramble()
     }
 }
