@@ -7,18 +7,24 @@ import com.pjl.kyubee.utilities.now
 import javax.inject.Inject
 
 class TimerInteractor @Inject constructor(
+        private val solveUseCase: SolveUseCase,
         strategyFactory: TimingStrategyFactory
 ) : TimerUseCase {
 
-    private val timer = Timer.RESET_TIMER
+    private var timer = Timer.RESET_TIMER
     private val timingController = strategyFactory.create(timer)
 
     override fun onDownEvent(): Timer {
-        return timingController.onDownEvent()
+        timer = timingController.onDownEvent()
+//        if (timer.state == Timer.State.STOPPED) {
+//            solveUseCase.save(timer)
+//        }
+        return timer
     }
 
     override fun onUpEvent(): Timer {
-        return timingController.onUpEvent()
+        timer = timingController.onUpEvent()
+        return timer
     }
 
     override fun remainingInspection(): Long {

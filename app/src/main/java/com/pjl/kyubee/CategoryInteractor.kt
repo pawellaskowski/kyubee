@@ -13,8 +13,8 @@ class CategoryInteractor @Inject constructor(
         private val settingsController: SettingsController
 ) : CategoryUseCase {
 
-    override fun getCategoryList(): Flowable<List<Category>> {
-        return categoryRepository.getAllCategories()
+    override fun getCategoryList(): Observable<List<Category>> {
+        return categoryRepository.getAllCategories().toObservable()
     }
 
     override fun getCategoryObservable(): Observable<Category> {

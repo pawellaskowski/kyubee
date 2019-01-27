@@ -7,7 +7,7 @@ import io.reactivex.Single
 
 interface CategoryUseCase {
 
-    fun getCategoryList(): Flowable<List<Category>>
+    fun getCategoryList(): Observable<List<Category>>
 
     fun getCategoryObservable(): Observable<Category>
 

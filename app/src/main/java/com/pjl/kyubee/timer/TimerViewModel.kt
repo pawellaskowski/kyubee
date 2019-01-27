@@ -38,8 +38,10 @@ class TimerViewModel @Inject constructor(
     }
 
     override fun onCurrentCategoryChanged(newCategory: Category) {
+        if (newCategory != _currentCategory.value) {
+            _scramble.value = DataHolder(Status.LOADING, null)
+        }
         super.onCurrentCategoryChanged(newCategory)
-        _scramble.postValue(DataHolder(Status.LOADING, null))
     }
 
     fun remainingInspection() = timerUseCase.remainingInspection()

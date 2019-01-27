@@ -25,17 +25,12 @@ class SettingsController(
     private val _categorySubject = BehaviorSubject.create<Category>()
     val categorySubject: Observable<Category>
         get() = _categorySubject
-    private val disposables = CompositeDisposable()
 
     init {
         categoryRepo.getCategory(preferredCategoryName())
+                .toObservable()
                 .subscribeOn(Schedulers.io())
-                .subscribe ({
-                    category -> _categorySubject.onNext(category)
-                }, {
-                    Log.d("__category", "Message: ${it.message}")
-                })
-                .addTo(disposables)
+                .subscribe(_categorySubject)
     }
 
     private fun preferredCategoryName(): String {
@@ -46,13 +41,15 @@ class SettingsController(
     }
 
     fun setCategory(selectedCategory: Category) {
-        with (preferences.edit()) {
-            putString(appContext.resources.getString(R.string.selected_category_key),
-                    selectedCategory.name)
-            apply()
-        }
-        ioThread {
-            _categorySubject.onNext(selectedCategory)
+        if (selectedCategory != _categorySubject.value) {
+            with(preferences.edit()) {
+                putString(appContext.resources.getString(R.string.selected_category_key),
+                        selectedCategory.name)
+                apply()
+            }
+            ioThread {
+                _categorySubject.onNext(selectedCategory)
+            }
         }
     }
 

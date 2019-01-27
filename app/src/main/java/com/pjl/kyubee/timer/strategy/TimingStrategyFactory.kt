@@ -1,12 +1,11 @@
 package com.pjl.kyubee.timer.strategy
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.pjl.kyubee.R
 import com.pjl.kyubee.timer.Timer
 
-class TimingStrategyFactory(private val app: Application) {
+class TimingStrategyFactory (private val app: Application) {
 
     fun create(timer: Timer): TimingStrategy {
         val context = app.applicationContext

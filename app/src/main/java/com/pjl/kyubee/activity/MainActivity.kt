@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        configureToolbar()
-        configureBottomNavigation()
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(ActivityViewModel::class.java)
 
+        configureToolbar()
+        configureBottomNavigation()
         configureCategorySpinner()
     }
 

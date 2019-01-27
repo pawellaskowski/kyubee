@@ -2,6 +2,7 @@ package com.pjl.kyubee.di
 
 import com.pjl.kyubee.*
 import com.pjl.kyubee.repository.CategoryRepository
+import com.pjl.kyubee.repository.SolveRepository
 import com.pjl.kyubee.settings.SettingsController
 import com.pjl.kyubee.timer.strategy.TimingStrategyFactory
 import dagger.Module
@@ -13,17 +14,32 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideTimerUseCase(strategyFactory: TimingStrategyFactory) : TimerUseCase =
-            TimerInteractor(strategyFactory)
+    fun provideTimerUseCase(solveUseCase: SolveUseCase,
+                            strategyFactory: TimingStrategyFactory): TimerUseCase {
+        return TimerInteractor(solveUseCase, strategyFactory)
+    }
+
 
     @Singleton
     @Provides
     fun provideCategoryUseCase(categoryRepo: CategoryRepository,
-                               settingsController: SettingsController) : CategoryUseCase =
-            CategoryInteractor(categoryRepo, settingsController)
+                               settingsController: SettingsController): CategoryUseCase {
+        return CategoryInteractor(categoryRepo, settingsController)
+    }
+
 
     @Singleton
     @Provides
-    fun provideScrambleUseCase(categoryUseCase: CategoryUseCase) : ScrambleUseCase =
-            ScrambleInteractor(categoryUseCase)
+    fun provideScrambleUseCase(categoryUseCase: CategoryUseCase): ScrambleUseCase {
+        return ScrambleInteractor(categoryUseCase)
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideSolveUseCase(categoryUseCase: CategoryUseCase,
+                            scrambleUseCase: ScrambleUseCase,
+                            solveRepo: SolveRepository): SolveUseCase {
+        return SolveInteractor(categoryUseCase, scrambleUseCase, solveRepo)
+    }
 }
