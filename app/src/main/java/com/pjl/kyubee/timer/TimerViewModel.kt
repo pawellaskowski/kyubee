@@ -26,22 +26,12 @@ class TimerViewModel @Inject constructor(
     init {
         scrambleUseCase.getScrambleObservable()
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe {
-                    _scramble.postValue(DataHolder(Status.LOADING, null))
-                }
                 .subscribe({
                     _scramble.postValue(DataHolder(Status.SUCCESS, it))
                 }, {
                     _scramble.postValue(DataHolder(Status.ERROR, null))
                 })
                 .addTo(compositeDisposable)
-    }
-
-    override fun onCurrentCategoryChanged(newCategory: Category) {
-        if (newCategory != _currentCategory.value) {
-            _scramble.value = DataHolder(Status.LOADING, null)
-        }
-        super.onCurrentCategoryChanged(newCategory)
     }
 
     fun remainingInspection() = timerUseCase.remainingInspection()
@@ -57,5 +47,9 @@ class TimerViewModel @Inject constructor(
     fun scramble() {
         _scramble.postValue(DataHolder(Status.LOADING, null))
         scrambleUseCase.scramble()
+    }
+
+    override fun onCategoryChanged(category: Category) {
+        scramble()
     }
 }

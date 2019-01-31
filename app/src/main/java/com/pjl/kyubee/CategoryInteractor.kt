@@ -3,9 +3,7 @@ package com.pjl.kyubee
 import com.pjl.kyubee.model.Category
 import com.pjl.kyubee.repository.CategoryRepository
 import com.pjl.kyubee.settings.SettingsController
-import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.Single
 import javax.inject.Inject
 
 class CategoryInteractor @Inject constructor(

@@ -36,7 +36,11 @@ class ActivityViewModel @Inject constructor(
                 .addTo(compositeDisposable)
     }
 
-    fun selectCategory(category: Category) {
+    fun setCategory(category: Category) {
         categoryUseCase.setCurrentCategory(category)
+    }
+
+    override fun onCategoryChanged(category: Category) {
+
     }
 }

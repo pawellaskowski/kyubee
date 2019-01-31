@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.selectCategory(parent?.getItemAtPosition(position) as Category)
+                viewModel.setCategory(parent?.getItemAtPosition(position) as Category)
             }
         }
     }
