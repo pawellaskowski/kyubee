@@ -3,9 +3,8 @@ package com.pjl.kyubee.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.entity.Category
 import io.reactivex.Flowable
-import io.reactivex.Single
 
 @Dao
 interface CategoryDao {

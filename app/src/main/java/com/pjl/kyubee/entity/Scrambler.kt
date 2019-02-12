@@ -1,6 +1,6 @@
-package com.pjl.kyubee.model
+package com.pjl.kyubee.entity
 
-import com.pjl.kyubee.utilities.*
+import com.pjl.kyubee.common.*
 import net.gnehzr.tnoodle.scrambles.Puzzle
 import puzzle.*
 

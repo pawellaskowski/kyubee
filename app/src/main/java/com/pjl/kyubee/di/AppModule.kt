@@ -9,12 +9,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pjl.kyubee.database.CategoryDao
 import com.pjl.kyubee.database.KyubeeDatabase
 import com.pjl.kyubee.database.SolveDao
-import com.pjl.kyubee.model.Category
-import com.pjl.kyubee.model.Scrambler
+import com.pjl.kyubee.entity.Category
+import com.pjl.kyubee.entity.Scrambler
 import com.pjl.kyubee.repository.CategoryRepository
 import com.pjl.kyubee.repository.SolveRepository
 import com.pjl.kyubee.settings.SettingsController
-import com.pjl.kyubee.utilities.DATABASE_NAME
+import com.pjl.kyubee.common.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

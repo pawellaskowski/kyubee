@@ -1,8 +1,8 @@
 package com.pjl.kyubee.history
 
-import com.pjl.kyubee.CategoryUseCase
-import com.pjl.kyubee.SolveUseCase
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.usecase.SolveUseCase
+import com.pjl.kyubee.entity.Category
 import com.pjl.kyubee.viewmodel.BaseViewModel
 import javax.inject.Inject
 

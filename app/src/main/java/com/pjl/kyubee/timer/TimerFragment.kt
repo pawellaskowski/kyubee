@@ -1,7 +1,9 @@
 package com.pjl.kyubee.timer
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -12,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.pjl.kyubee.R
-import com.pjl.kyubee.Status
+import com.pjl.kyubee.common.Status
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_timer.*
 import kotlinx.android.synthetic.main.fragment_timer.view.*
@@ -113,13 +115,12 @@ class TimerFragment : Fragment() {
     }
 
     private fun indicateReady() {
-        timer.setTextColor(ResourcesCompat.getColor(
-                resources, android.R.color.holo_green_light, null))
+        Log.d("__read", "ready")
+        timer.setTextColor(Color.GREEN)
     }
 
     private fun indicateNotReady() {
-        timer.setTextColor(ResourcesCompat.getColor(
-                resources, android.R.color.black, null));
+        timer.setTextColor(Color.BLACK);
     }
 
     private inner class TimeUpdate : Runnable {

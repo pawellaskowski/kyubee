@@ -1,4 +1,4 @@
-package com.pjl.kyubee
+package com.pjl.kyubee.usecase
 
 import com.pjl.kyubee.timer.Timer
 

@@ -1,7 +1,7 @@
-package com.pjl.kyubee.utilities
+package com.pjl.kyubee.common
 
 import androidx.room.TypeConverter
-import com.pjl.kyubee.model.Scrambler
+import com.pjl.kyubee.entity.Scrambler
 
 class Converters {
 

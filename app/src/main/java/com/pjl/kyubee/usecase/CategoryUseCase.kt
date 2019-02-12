@@ -1,9 +1,7 @@
-package com.pjl.kyubee
+package com.pjl.kyubee.usecase
 
-import com.pjl.kyubee.model.Category
-import io.reactivex.Flowable
+import com.pjl.kyubee.entity.Category
 import io.reactivex.Observable
-import io.reactivex.Single
 
 interface CategoryUseCase {
 

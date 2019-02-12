@@ -2,7 +2,7 @@ package com.pjl.kyubee.timer.strategy
 
 import android.os.Handler
 import com.pjl.kyubee.timer.Timer
-import com.pjl.kyubee.utilities.inspectionDuration
+import com.pjl.kyubee.common.inspectionDuration
 
 class InspectionStrategy(timer: Timer) : TimingStrategy(timer) {
 

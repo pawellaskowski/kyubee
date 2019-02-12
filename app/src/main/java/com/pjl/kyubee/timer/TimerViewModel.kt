@@ -2,8 +2,14 @@ package com.pjl.kyubee.timer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.pjl.kyubee.*
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.common.DataHolder
+import com.pjl.kyubee.common.Status
+import com.pjl.kyubee.entity.Category
+import com.pjl.kyubee.common.ioThread
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.usecase.ScrambleUseCase
+import com.pjl.kyubee.usecase.SolveUseCase
+import com.pjl.kyubee.usecase.TimerUseCase
 import com.pjl.kyubee.viewmodel.BaseViewModel
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -12,6 +18,7 @@ import javax.inject.Inject
 class TimerViewModel @Inject constructor(
         private val timerUseCase: TimerUseCase,
         private val scrambleUseCase: ScrambleUseCase,
+        private val solveUseCase: SolveUseCase,
         categoryUseCase: CategoryUseCase
 ) : BaseViewModel(categoryUseCase) {
 
@@ -37,7 +44,14 @@ class TimerViewModel @Inject constructor(
     fun remainingInspection() = timerUseCase.remainingInspection()
 
     fun onDownEvent() {
-        _timer.value = timerUseCase.onDownEvent()
+        val current = timerUseCase.onDownEvent()
+        _timer.value = current
+        if (current.isStopped()) {
+            ioThread {
+                scramble()
+                solveUseCase.save(current.accumulatedTime, categoryUseCase.getCurrentCategory().id)
+            }
+        }
     }
 
     fun onUpEvent() {

@@ -1,4 +1,4 @@
-package com.pjl.kyubee
+package com.pjl.kyubee.common
 
 enum class Status {
     LOADING,

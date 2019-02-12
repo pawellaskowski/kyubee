@@ -2,7 +2,7 @@ package com.pjl.kyubee.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.pjl.kyubee.activity.ActivityViewModel
+import com.pjl.kyubee.main.ActivityViewModel
 import com.pjl.kyubee.history.HistoryViewModel
 import com.pjl.kyubee.timer.TimerViewModel
 import com.pjl.kyubee.viewmodel.KyubeeViewModelFactory

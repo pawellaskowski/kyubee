@@ -1,4 +1,4 @@
-package com.pjl.kyubee.model
+package com.pjl.kyubee.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

@@ -1,7 +1,7 @@
 package com.pjl.kyubee.repository
 
 import com.pjl.kyubee.database.CategoryDao
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.entity.Category
 import javax.inject.Inject
 import javax.inject.Singleton
 

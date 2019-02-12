@@ -3,8 +3,8 @@ package com.pjl.kyubee.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pjl.kyubee.CategoryUseCase
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.entity.Category
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers

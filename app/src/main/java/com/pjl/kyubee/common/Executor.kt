@@ -1,4 +1,4 @@
-package com.pjl.kyubee.utilities
+package com.pjl.kyubee.common
 
 import java.util.concurrent.Executors
 

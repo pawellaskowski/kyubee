@@ -3,10 +3,10 @@ package com.pjl.kyubee.settings
 import android.app.Application
 import androidx.preference.PreferenceManager
 import com.pjl.kyubee.R
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.entity.Category
 import com.pjl.kyubee.repository.CategoryRepository
-import com.pjl.kyubee.utilities.CUBE3_TAG
-import com.pjl.kyubee.utilities.ioThread
+import com.pjl.kyubee.common.CUBE3_TAG
+import com.pjl.kyubee.common.ioThread
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject

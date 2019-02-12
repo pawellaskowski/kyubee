@@ -1,6 +1,6 @@
 package com.pjl.kyubee.timer
 
-import com.pjl.kyubee.utilities.now
+import com.pjl.kyubee.common.now
 
 class Timer(val state: State, val startTime: Long, val accumulatedTime: Long = 0) {
 

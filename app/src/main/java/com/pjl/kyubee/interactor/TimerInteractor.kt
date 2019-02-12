@@ -1,9 +1,11 @@
-package com.pjl.kyubee
+package com.pjl.kyubee.interactor
 
 import com.pjl.kyubee.timer.Timer
 import com.pjl.kyubee.timer.strategy.TimingStrategyFactory
-import com.pjl.kyubee.utilities.inspectionDuration
-import com.pjl.kyubee.utilities.now
+import com.pjl.kyubee.common.inspectionDuration
+import com.pjl.kyubee.common.now
+import com.pjl.kyubee.usecase.SolveUseCase
+import com.pjl.kyubee.usecase.TimerUseCase
 import javax.inject.Inject
 
 class TimerInteractor @Inject constructor(

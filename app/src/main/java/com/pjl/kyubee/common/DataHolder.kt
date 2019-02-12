@@ -1,4 +1,4 @@
-package com.pjl.kyubee
+package com.pjl.kyubee.common
 
 data class DataHolder<out T>(val status: Status, val data: T?) {
 

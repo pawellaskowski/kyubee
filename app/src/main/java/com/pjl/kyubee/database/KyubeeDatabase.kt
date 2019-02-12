@@ -3,9 +3,9 @@ package com.pjl.kyubee.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.pjl.kyubee.model.Category
-import com.pjl.kyubee.model.Solve
-import com.pjl.kyubee.utilities.Converters
+import com.pjl.kyubee.entity.Category
+import com.pjl.kyubee.entity.Solve
+import com.pjl.kyubee.common.Converters
 
 @Database(
         entities = [Solve::class, Category::class],

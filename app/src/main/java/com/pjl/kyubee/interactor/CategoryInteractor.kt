@@ -1,8 +1,9 @@
-package com.pjl.kyubee
+package com.pjl.kyubee.interactor
 
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.entity.Category
 import com.pjl.kyubee.repository.CategoryRepository
 import com.pjl.kyubee.settings.SettingsController
+import com.pjl.kyubee.usecase.CategoryUseCase
 import io.reactivex.Observable
 import javax.inject.Inject
 

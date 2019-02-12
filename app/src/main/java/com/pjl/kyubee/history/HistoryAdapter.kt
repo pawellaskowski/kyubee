@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pjl.kyubee.R
-import com.pjl.kyubee.model.Solve
+import com.pjl.kyubee.entity.Solve
 import kotlinx.android.synthetic.main.history_item.view.*
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.SolveViewHolder>() {

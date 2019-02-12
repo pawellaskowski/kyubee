@@ -1,10 +1,17 @@
 package com.pjl.kyubee.di
 
-import com.pjl.kyubee.*
+import com.pjl.kyubee.interactor.CategoryInteractor
+import com.pjl.kyubee.interactor.ScrambleInteractor
+import com.pjl.kyubee.interactor.SolveInteractor
+import com.pjl.kyubee.interactor.TimerInteractor
 import com.pjl.kyubee.repository.CategoryRepository
 import com.pjl.kyubee.repository.SolveRepository
 import com.pjl.kyubee.settings.SettingsController
 import com.pjl.kyubee.timer.strategy.TimingStrategyFactory
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.usecase.ScrambleUseCase
+import com.pjl.kyubee.usecase.SolveUseCase
+import com.pjl.kyubee.usecase.TimerUseCase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -37,9 +44,7 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideSolveUseCase(categoryUseCase: CategoryUseCase,
-                            scrambleUseCase: ScrambleUseCase,
-                            solveRepo: SolveRepository): SolveUseCase {
-        return SolveInteractor(categoryUseCase, scrambleUseCase, solveRepo)
+    fun provideSolveUseCase(solveRepo: SolveRepository): SolveUseCase {
+        return SolveInteractor(solveRepo)
     }
 }

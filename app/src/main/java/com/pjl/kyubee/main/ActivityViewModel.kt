@@ -1,11 +1,11 @@
-package com.pjl.kyubee.activity
+package com.pjl.kyubee.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.pjl.kyubee.CategoryUseCase
-import com.pjl.kyubee.DataHolder
-import com.pjl.kyubee.Status
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.common.DataHolder
+import com.pjl.kyubee.common.Status
+import com.pjl.kyubee.entity.Category
 import com.pjl.kyubee.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

@@ -1,4 +1,4 @@
-package com.pjl.kyubee.activity
+package com.pjl.kyubee.main
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.pjl.kyubee.R
-import com.pjl.kyubee.model.Category
+import com.pjl.kyubee.entity.Category
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
