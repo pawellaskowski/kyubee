@@ -1,20 +1,21 @@
 package com.pjl.kyubee.history
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
-import com.pjl.kyubee.KyubeeApp
-import com.pjl.kyubee.model.Solve
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.usecase.SolveUseCase
+import com.pjl.kyubee.entity.Category
+import com.pjl.kyubee.viewmodel.BaseViewModel
+import javax.inject.Inject
 
-class HistoryViewModel(application: Application) : AndroidViewModel(application) {
+class HistoryViewModel @Inject constructor(
+        solveUseCase: SolveUseCase,
+        categoryUseCase: CategoryUseCase
+) : BaseViewModel(categoryUseCase) {
 
-    private val repository = (application as KyubeeApp).getRepository()
-    private val allSolves: LiveData<PagedList<Solve>>
-
-    init {
-        allSolves = repository.getAllSolves()
-    }
+    private val allSolves = solveUseCase.loadAll()
 
     fun getAllSolves() = allSolves
+
+    override fun onCategoryChanged(category: Category) {
+
+    }
 }

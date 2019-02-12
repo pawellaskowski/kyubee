@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">Kyubee</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scramble_not_generated">Could not generate a scramble</string>
 </resources>

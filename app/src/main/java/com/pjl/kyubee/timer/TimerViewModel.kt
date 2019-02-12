@@ -1,43 +1,69 @@
 package com.pjl.kyubee.timer
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import com.pjl.kyubee.KyubeeApp
-import com.pjl.kyubee.model.Solve
-import com.pjl.kyubee.model.preparation.InspectionStrategy
-import com.pjl.kyubee.model.preparation.PreparationStrategy
-import com.pjl.kyubee.utilities.inspectionDuration
-import com.pjl.kyubee.utilities.now
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.pjl.kyubee.common.DataHolder
+import com.pjl.kyubee.common.Status
+import com.pjl.kyubee.entity.Category
+import com.pjl.kyubee.common.ioThread
+import com.pjl.kyubee.usecase.CategoryUseCase
+import com.pjl.kyubee.usecase.ScrambleUseCase
+import com.pjl.kyubee.usecase.SolveUseCase
+import com.pjl.kyubee.usecase.TimerUseCase
+import com.pjl.kyubee.viewmodel.BaseViewModel
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class TimerViewModel(application: Application) : AndroidViewModel(application) {
+class TimerViewModel @Inject constructor(
+        private val timerUseCase: TimerUseCase,
+        private val scrambleUseCase: ScrambleUseCase,
+        private val solveUseCase: SolveUseCase,
+        categoryUseCase: CategoryUseCase
+) : BaseViewModel(categoryUseCase) {
 
-    private val repository = (application as KyubeeApp).getRepository()
-    private val timer: MutableLiveData<Timer> = MutableLiveData()
-    private var preparation: PreparationStrategy = InspectionStrategy(timer)
+    private val _timer: MutableLiveData<Timer> = MutableLiveData()
+    val timer: LiveData<Timer>
+        get() = _timer
+
+    private val _scramble: MutableLiveData<DataHolder<String>> = MutableLiveData()
+    val scramble: LiveData<DataHolder<String>>
+        get() = _scramble
 
     init {
-        timer.value = Timer.RESET_TIMER
+        scrambleUseCase.getScrambleObservable()
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    _scramble.postValue(DataHolder(Status.SUCCESS, it))
+                }, {
+                    _scramble.postValue(DataHolder(Status.ERROR, null))
+                })
+                .addTo(compositeDisposable)
     }
 
-    fun getTimer(): LiveData<Timer> = timer
-
-    fun remainingInspection(): Long {
-        val startTime = timer.value?.startTime ?: now()
-        return (startTime + inspectionDuration - now()) / 1000
-    }
+    fun remainingInspection() = timerUseCase.remainingInspection()
 
     fun onDownEvent() {
-        preparation.onDownEvent()
-        timer.value?.let {
-            if (it.isStopped()) {
-                repository.insert(Solve(it.accumulatedTime))
+        val current = timerUseCase.onDownEvent()
+        _timer.value = current
+        if (current.isStopped()) {
+            ioThread {
+                scramble()
+                solveUseCase.save(current.accumulatedTime, categoryUseCase.getCurrentCategory().id)
             }
         }
     }
 
     fun onUpEvent() {
-        preparation.onUpEvent()
+        _timer.value = timerUseCase.onUpEvent()
+    }
+
+    fun scramble() {
+        _scramble.postValue(DataHolder(Status.LOADING, null))
+        scrambleUseCase.scramble()
+    }
+
+    override fun onCategoryChanged(category: Category) {
+        scramble()
     }
 }
